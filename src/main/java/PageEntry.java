@@ -32,6 +32,12 @@ public class PageEntry implements Comparable<PageEntry> {
 
     @Override
     public int compareTo(PageEntry o) {
-        return 0;
+        if(o.getCount() == count){
+            if(o.getPdfName().equals(pdfName)){
+                return Integer.compare(o.getPage(),page);
+            }
+        }
+            return Integer.compare(o.getCount(), count);
     }
+
 }
