@@ -49,8 +49,12 @@ public class BooleanSearchEngine implements SearchEngine {
     }
     @Override
     public List<PageEntry> search(String word){
+        if(!responseMap.containsKey(word)){
+            return Collections.emptyList();
+            }
         List<PageEntry> list = responseMap.get(word);
                 list.sort(PageEntry::compareTo);
          return list;
+
     }
 }
