@@ -3,11 +3,12 @@ import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
 
-import javax.print.Doc;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class BooleanSearchEngine implements SearchEngine {
     public Map<String, List<PageEntry>> responseMap = new HashMap<>();
@@ -17,9 +18,8 @@ public class BooleanSearchEngine implements SearchEngine {
         File pdfs = new File("pdfs");
         File[] pdfsList = pdfs.listFiles();
         for (File pdf : pdfsList) {
-            try {
-                String fileName = pdf.getName();
-                PdfDocument pdfFile = new PdfDocument(new PdfReader(pdf));
+            String fileName = pdf.getName();
+            try(PdfDocument pdfFile = new PdfDocument(new PdfReader(pdf))){
                 for (int i=1; i<=pdfFile.getNumberOfPages(); i++) {
                     PdfPage page = pdfFile.getPage(i);
                     String text = PdfTextExtractor.getTextFromPage(page);
@@ -38,21 +38,21 @@ public class BooleanSearchEngine implements SearchEngine {
                         responseMap.put(word, pageEntries);
                     }
                 }
-            } catch (IOException e) {
+        }catch (IOException e){
                 e.printStackTrace();
             }
-        }
+            }
 
 
 
 
     }
     @Override
-    public List<PageEntry> search(String word){
-        if(!responseMap.containsKey(word)){
-            return Collections.emptyList();
-            }
-        List<PageEntry> list = responseMap.get(word);
+    public List<PageEntry> search(String word)throws NullPointerException{
+        if (!responseMap.containsKey(word.toLowerCase())) {
+            throw new NullPointerException("Слово не найдено");
+        }
+        List<PageEntry> list = responseMap.get(word.toLowerCase());
                 list.sort(PageEntry::compareTo);
          return list;
 

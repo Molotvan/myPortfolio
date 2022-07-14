@@ -10,17 +10,17 @@ public class Client {
         String host = "127.0.0.1";
         int port = 8989;
         Scanner scanner = new Scanner(System.in);
-        while(true){
-        try(Socket clientSocket = new Socket(host, port);
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))){
+        while (true) {
+            try (Socket clientSocket = new Socket(host, port);
+                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
 
                 out.println(scanner.nextLine());
-            System.out.println(in.readLine());
-            }catch (IOException e){
-            e.getMessage();
+                System.out.println(in.readLine());
+            } catch (IOException e) {
+                e.getMessage();
 
-        }
+            }
         }
     }
 }
