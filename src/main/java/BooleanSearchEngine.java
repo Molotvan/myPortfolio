@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class BooleanSearchEngine implements SearchEngine {
-    public Map<String, List<PageEntry>> responseMap = new HashMap<>();
+    private Map<String, List<PageEntry>> responseMap = new HashMap<>();
 
 
     public BooleanSearchEngine(File pdfsDir) throws IOException {
@@ -19,8 +19,8 @@ public class BooleanSearchEngine implements SearchEngine {
         File[] pdfsList = pdfs.listFiles();
         for (File pdf : pdfsList) {
             String fileName = pdf.getName();
-            try(PdfDocument pdfFile = new PdfDocument(new PdfReader(pdf))){
-                for (int i=1; i<=pdfFile.getNumberOfPages(); i++) {
+            try (PdfDocument pdfFile = new PdfDocument(new PdfReader(pdf))) {
+                for (int i = 1; i <= pdfFile.getNumberOfPages(); i++) {
                     PdfPage page = pdfFile.getPage(i);
                     String text = PdfTextExtractor.getTextFromPage(page);
                     String[] words = text.split("\\P{IsAlphabetic}+");
@@ -38,23 +38,26 @@ public class BooleanSearchEngine implements SearchEngine {
                         responseMap.put(word, pageEntries);
                     }
                 }
-        }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-            }
-
-
+        }
 
 
     }
+
     @Override
-    public List<PageEntry> search(String word)throws NullPointerException{
+    public List<PageEntry> search(String word) throws NullPointerException {
         if (!responseMap.containsKey(word.toLowerCase())) {
             throw new NullPointerException("Слово не найдено");
         }
         List<PageEntry> list = responseMap.get(word.toLowerCase());
-                list.sort(PageEntry::compareTo);
-         return list;
+        list.sort(PageEntry::compareTo);
+        return list;
 
+    }
+
+    public Map<String, List<PageEntry>> getResponseMap() {
+        return responseMap;
     }
 }

@@ -23,7 +23,7 @@ public class Main {
                     Type listType = new TypeToken<List<PageEntry>>() {}.getType();
                     Gson gson = new Gson();
                     String word = in.readLine();
-                    if(!engine.responseMap.containsKey(word.toLowerCase())){
+                    if(!engine.getResponseMap().containsKey(word.toLowerCase())){
                         out.print("Слово не найдено");
                     }else{
                     out.print(gson.toJson(engine.search(word), listType));
