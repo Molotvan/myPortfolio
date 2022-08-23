@@ -1,2 +1,2 @@
-https://github.com/Molotvan/HTTP_Cats
-https://github.com/Molotvan/pcs-jd-diplom
+1. https://github.com/Molotvan/HTTP_Cats
+2. https://github.com/Molotvan/pcs-jd-diplom
